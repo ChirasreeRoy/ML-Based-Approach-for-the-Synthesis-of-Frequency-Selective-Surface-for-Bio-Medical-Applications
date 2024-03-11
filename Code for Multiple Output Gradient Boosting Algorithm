@@ -1,0 +1,36 @@
+Code snippet for Multiple Output Gradient Boosting Regression
+
+import pandas as pd
+from sklearn.multioutput import MultiOutputRegressor 
+from sklearn.ensemble import GradientBoostingRegressor
+
+# Load dataset
+data = pd.read_csv("D:\VS code\FSS_project\FSS\Dataset_ML.csv")
+
+# Split into features and labels
+X = data[['Length', 'Width', 'Breadth']]
+y = data.iloc[:, 3:]  # select all columns starting from the 4th column
+
+# Train multi-output gradient boosting model 
+gbr = GradientBoostingRegressor() 
+multi_gbr = MultiOutputRegressor(gbr) 
+multi_gbr.fit(X, y)
+
+# Predict S21 values for a new input 
+length = float(input("Enter the length: "))
+width = float(input("Enter the width: "))
+breadth = float(input("Enter the breadth: ")) 
+new_input = [[length, width, breadth]] 
+prediction = multi_gbr.predict(new_input) 
+print(prediction)
+
+# Set feature names 
+feature_names = list(y.columns)
+
+# Create a new DataFrame with the predicted S21 values 
+s21_pred = pd.DataFrame(prediction, columns=feature_names)
+
+# Write the DataFrame to an Excel file 
+s21_pred.to_excel("MOGBR_pred.xlsx", index=False)
+
+
