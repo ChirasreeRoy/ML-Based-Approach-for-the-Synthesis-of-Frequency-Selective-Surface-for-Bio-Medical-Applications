@@ -1,0 +1,33 @@
+Code snippet for Linear Regression
+
+import pandas as pd
+from sklearn.linear_model import LinearRegression
+
+# Load dataset
+data = pd.read_csv("D:\VS code\FSS_project\FSS\Dataset_ML.csv")
+
+# Split into features and labels
+X = data[['Length', 'Width','Breadth']]
+y = data.drop(['Length', 'Width','Breadth'], axis=1)
+
+# Train linear regression model 
+lr = LinearRegression() 
+lr.fit(X, y)
+
+# Predict S21 values for a new input 
+length = float(input("Enter the length: ")) 
+width = float(input("Enter the width: "))
+breadth = float(input("Enter the breadth: ")) 
+new_input = [[length, width, breadth]] 
+prediction = lr.predict(new_input) 
+print(prediction)
+
+# Set feature names 
+feature_names = list(y.columns)
+
+# Create a new DataFrame with the predicted S21 values 
+s21_pred = pd.DataFrame(prediction, columns=feature_names)
+
+# Write the DataFrame to an Excel file 
+s21_pred.to_excel("LR_pred", index=False)
+
